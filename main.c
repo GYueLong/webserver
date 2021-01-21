@@ -5,7 +5,9 @@
 	> Created Time: Fri 01 Jan 2021 09:10:23 PM CST
  ************************************************************************/
 
-#include <stdio.h>
+//#include <stdio.h>
+
+#include "head.h"
 
 int main() {
     printf("hello world!\n");
