@@ -12,5 +12,32 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <sys/epoll.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
+#include <sys/uio.h>
+#include <assert.h>
+#include <errno.h>
+#include <stdarg.h>
+
+#include "locker.h"
+#include "threadpool.h"
+#include "http.h"
+#include "conf.h"
+#include "Server.h"
+#include "util.h"
+
+#ifdef DEBUG 
+#define DBG(format, args...) {\
+	printf(format, ##args);\
+}
+#else
+#define DBG(format, ...)
+#endif
 
 #endif
