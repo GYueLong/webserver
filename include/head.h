@@ -29,7 +29,7 @@
 #include "threadpool.h"
 #include "http.h"
 #include "conf.h"
-#include "Server.h"
+#include "server.h"
 #include "util.h"
 
 #ifdef DEBUG 

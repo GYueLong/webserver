@@ -60,3 +60,20 @@ void modfd(int epollfd, int fd, int ev) {
     event.events = ev | EPOLLET | EPOLLONESHOT | EPOLLRDHUP;
     epoll_ctl(epollfd, EPOLL_CTL_MOD, fd, &event);
 }
+
+/*void sig_handler(int sig) {
+    int save_errno = errno;
+    int msg = sig;
+    send(pipefd[1], (char *)msg, 1, 0);
+    errno = save_errno;
+}
+
+void addsig(int sig) {
+    struct sigaction sa;
+    memset(&sa, '\0', sizeof(sa));
+    sa.sa_handler = sig_handler;
+    sa.sa_flags |= SA_RESTART;
+    sigfillset(&sa.sa_mask);
+    assert(sigaction(sig, &sa, NULL) != -1);
+}
+*/

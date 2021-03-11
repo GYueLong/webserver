@@ -16,6 +16,8 @@ void addfd(int epollfd, int fd, bool enable_et);
 void removefd(int epollfd, int fd);
 void modfd(int epollfd, int fd, int ev);
 
-
+//信号处理函数
+void sig_handler(int sig);
+void addsig(int sig);
 
 #endif

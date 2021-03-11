@@ -10,6 +10,7 @@
 
 #define MAX_FD 65536
 #define MAX_EVENT_NUMBER 1024
+#define TIMESLOT 5
 
 #include "head.h"
 
