@@ -13,7 +13,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <fcntl.h>
@@ -26,11 +28,14 @@
 #include <stdarg.h>
 
 #include "locker.h"
+#include "log.h"
 #include "threadpool.h"
 #include "http.h"
 #include "conf.h"
 #include "server.h"
 #include "util.h"
+
+
 
 #ifdef DEBUG 
 #define DBG(format, args...) {\

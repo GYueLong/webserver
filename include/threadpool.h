@@ -12,6 +12,7 @@
 #include <pthread.h>
 #include <exception>
 #include "locker.h"
+#include "log.h"
 
 template<typename T>
 class threadpool {
@@ -48,11 +49,11 @@ threadpool<T>::threadpool(int thread_number, int max_requests) :
 	}
 
 	for (int i = 0; i < thread_number; i++) {
-		printf("create the %dth thread\n", i);
 		if (pthread_create(m_threads + i, NULL, worker, this) != 0) {
 			delete[] m_threads;
 			throw std::exception();
 		}
+		LOG_INFO("create the %dth thread", i);
 		if (pthread_detach(m_threads[i])) {
 			delete[] m_threads;
 			throw std::exception();

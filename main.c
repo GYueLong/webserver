@@ -7,6 +7,8 @@
 
 #include "./include/head.h"
 
+int fd_w;
+
 int main(int argc, char **argv) {
 
     pid_t pid;
@@ -19,10 +21,8 @@ int main(int argc, char **argv) {
     setsid();
     close(1);
 
-
     Server server;
     server.init(argc, argv);
     server.start();
-
     return 0;
 }

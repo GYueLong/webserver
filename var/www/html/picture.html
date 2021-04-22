@@ -1,17 +1,84 @@
-<html>
+<!DOCTYPE html>
+<html lang="cn">
 <head>
-    <meta charset="UTF-8">
-    <link rel="shortcut icon" href="/favicon.ico" />
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" href="/favicon.ico" />
+<title>相册</title>
+<style>
+/*  标题 */
+ 
+#p1 {
+	color: red;
+	font-size: 30px;
+	font-family: 楷体;
+}
+/* 图片 */
+#m1 {
+	width: 200;
+	height: 100;
+}
+</style>
+
 </head>
-<body background="../src/background.jpg">
-<br/>
-<br/>
-<div align="center">
-<img src="../src/cat.png" alt="">
-</div>  
-   
+<body>
+	
+<!-- 整体居中 -->
+<table border="0" cellspacing="0" width="60%" height="30%" align="center" >
+  <!-- 标题 -->
+  <tr>
+    <td colspan="3"><marquee scrollamount="20" id="p1">
+      我的快乐就是想你
+      </marquee></td>
+  </tr>
+  <!-- 左箭头，图片，右箭头 -->
+  <tr>
+    
+    <td ><center>
+        <img id="imgInit" width="500" height="400" src="" usemap="#p" title="电子相册"/>
+      </center></td>
+    
+  </tr>
+  <!-- 按钮 -->
+  <tr>
+    <td></td>
+    <td><center>
+        <input type="button" value="上一张" onClick="shang()"/>
+		
+        <input type="button" value="下一张" onClick="xia()"/>
+      </center></td>
+  </tr>
+  <tr>
+  	<td></td>
+  	
+  </tr>
+</table>
+<!-- 定位 -->
+<map name="p">
+  <area shape="rect" coords="0,0,307,460" onClick="shang()"/>
+  <area shape="rect" coords="307,0,614,460" onClick="xia()"/>
+</map>
+<div class="text" style=" text-align:center;"><font size="5">(这里图片进行了压缩，显示高清图片目前还差点意思😐)</font></div>
+	
 </body>
-    
-    
-    
+
+<script language="javascript">
+	var index=1; 
+	document.getElementById("imgInit").src="../src/" + index + ".jpg";
+	
+	function shang(){
+		index--;
+		if(index==0){
+			index=8;
+		}
+		document.getElementById("imgInit").src="../src/" + index + ".jpg";
+	}
+	// 下一张功能
+	function xia(){
+		index++;
+		if(index==9){
+			index=1;
+		}
+		document.getElementById("imgInit").src="../src/" + index + ".jpg";
+	}
+</script>
 </html>

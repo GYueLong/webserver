@@ -61,6 +61,10 @@ void modfd(int epollfd, int fd, int ev) {
     epoll_ctl(epollfd, EPOLL_CTL_MOD, fd, &event);
 }
 
+//int write_log(char *buf, int length) {
+//    write(pipefd[1], buf, length);
+//}
+
 /*void sig_handler(int sig) {
     int save_errno = errno;
     int msg = sig;

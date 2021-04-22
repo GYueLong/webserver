@@ -8,6 +8,8 @@
 #ifndef _UTIL_H
 #define _UTIL_H
 
+extern int pipefd[2];
+
 int getArgsint(const char *argname);
 char *getArgschar(const char *argname);
 
@@ -19,5 +21,7 @@ void modfd(int epollfd, int fd, int ev);
 //信号处理函数
 void sig_handler(int sig);
 void addsig(int sig);
+
+//int write_log(char *buf, int length);
 
 #endif

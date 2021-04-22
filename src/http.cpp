@@ -39,7 +39,7 @@ void Http::init(int sockfd, const sockaddr_in &addr) {
 	addfd(m_epollfd, sockfd, true);
 	m_user_count++;
 	init();
-	printf("用户: %d\n", m_user_count);
+	//printf("用户: %d\n", m_user_count);
 }
 
 void Http::init() {
@@ -54,6 +54,8 @@ void Http::init() {
 	m_checked_idx = 0;
 	m_read_idx = 0;
 	m_write_idx = 0;
+	f_msg = 0;
+	memset(msg, '\0', 50);
 	memset(m_read_buf, '\0', READ_BUFFER_SIZE);
 	memset(m_write_buf, '\0', WRITE_BUFFER_SIZE);
 	memset(m_real_file, '\0', FILENAME_LEN);
@@ -102,18 +104,27 @@ bool Http::read() {
 		}
 		m_read_idx += bytes_read;
 	}
+	printf("\n==============\n");
+	printf("%s", m_read_buf);
+	printf("\n==============\n");
+	
 	return true;
 }
 
 Http::HTTP_CODE Http::parse_request_line(char *text) {
+	//解析请求行，首先判断路径，路径非法直接退出
 	m_url = strpbrk(text, " \t");
 	if (!m_url) {
 		return BAD_REQUEST;
 	}
 	*m_url++ = '\0';
+	//解析方法
 	char *method = text;
 	if (strcasecmp(method, "GET") == 0) {
 		m_method = GET;
+	} else if (strcasecmp(method, "POST") == 0) {
+		m_method = POST;
+		f_msg = 1;
 	} else {
 		return BAD_REQUEST;
 	}
@@ -166,6 +177,16 @@ Http::HTTP_CODE Http::parse_headers(char *text) {
 }
 
 Http::HTTP_CODE Http::parse_content(char *text) {
+
+	if (f_msg == 1) {
+		f_msg = 0;
+		strncpy(msg, text + 6, 50);
+		strcpy(m_url, "/thanks.html");
+		LOG_INFO("%s: %s", inet_ntoa(m_address.sin_addr), msg);
+		//printf("msg is %s\n", msg);
+		return POST_REQUEST;
+	}
+
 	if (m_read_idx >= (m_content_length + m_checked_idx)) {
 		text[m_content_length] = '\0';
 		return GET_REQUEST;
@@ -173,15 +194,20 @@ Http::HTTP_CODE Http::parse_content(char *text) {
 	return NO_REQUEST;
 }
 
+
+
 Http::HTTP_CODE Http::process_read() {
 	LINE_STATUS line_status = LINE_OK;
 	HTTP_CODE ret = NO_REQUEST;
 	char *text = 0;
-	DBG("process_read()");
+	
+	
+	//DBG("process_read()");
 	while (((m_check_state == CHECK_STATE_CONTENT) && (line_status == LINE_OK)) || ((line_status = parse_line()) == LINE_OK)) {
 		text = get_line();
 		m_start_line = m_checked_idx;
 		printf("got 1 http line: %s\n", text);
+		//LOG_INFO("process_read()");
 		DBG("m_check_state: %d\n", m_check_state);
 		switch (m_check_state) {
 			case CHECK_STATE_REQUESTLINE: {
@@ -205,7 +231,7 @@ Http::HTTP_CODE Http::process_read() {
 			}
 			case CHECK_STATE_CONTENT: {
 				ret = parse_content(text);
-				if (ret == GET_REQUEST) {
+				if (ret == GET_REQUEST || ret == POST_REQUEST) {
 					return do_request();
 				}
 				line_status = LINE_OPEN;
@@ -271,7 +297,7 @@ void Http::unmap() {
 	}
 }
 
-bool Http::write() {
+bool Http::mwrite() {
 	int temp = 0;
 	int bytes_have_send = 0;
 	int bytes_to_send = m_write_idx;

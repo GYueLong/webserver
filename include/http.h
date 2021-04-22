@@ -10,6 +10,8 @@
 
 #include "head.h"
 
+extern int fd_w;
+
 //namespace Http {
 class Http {
 public:
@@ -18,7 +20,7 @@ public:
 	//读缓存区的大小
 	static const int READ_BUFFER_SIZE = 2048;
 	//写缓存区的大小
-	static const int WRITE_BUFFER_SIZE = 1024;
+	static const int WRITE_BUFFER_SIZE = 4096;
 	//url最大长度
 	static const int URL_LEN = 20;
 	//HTTP请求方法
@@ -30,7 +32,7 @@ public:
 					CHECK_STATE_HEADER,
 					CHECK_STATE_CONTENT};
 	enum HTTP_CODE {NO_REQUEST, GET_REQUEST, BAD_REQUEST, NO_RESOURCE, FORBIDDEN_REQUEST, FILE_REQUEST, 
-				INTERNAL_ERROR, CLOSED_CONNECTION};
+				INTERNAL_ERROR, CLOSED_CONNECTION, POST_REQUEST};
 	//从状态机的三种可能状态，即行的读取状态，分别表示：读取到一个完整的行，行出错和行数据尚且不完整
 	enum LINE_STATUS {LINE_OK = 0, LINE_BAD, LINE_OPEN};
 
@@ -48,7 +50,7 @@ public:
 	//非阻塞读操作
 	bool read();
 	//非阻塞写操作
-	bool write();
+	bool mwrite();
 
 private:
 	//初始化连接
@@ -105,6 +107,9 @@ private:
 	struct stat m_file_stat;
 	struct iovec m_iv[2];
 	int m_iv_count;
+
+	int f_msg;
+	char msg[50];
 
 };
 //}
