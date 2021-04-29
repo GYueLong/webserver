@@ -81,3 +81,39 @@ void addsig(int sig) {
     assert(sigaction(sig, &sa, NULL) != -1);
 }
 */
+
+char *stohex(char *dst, int length)
+{
+    char buf_temp[2048] = {0};
+    char *buf;
+    buf = (char *)malloc(sizeof(char) * 2048);
+    memset(buf, '\0', 2048);
+    for (int i = 0, j = 0; i < length; i++) {
+        if (dst[i] == '%') {
+            buf[j++] = '\\';
+            buf[j++] = 'x';
+        } else buf[j++] = dst[i];
+    }
+    printf("util buf: %s\n", buf);
+    memset(dst, '\0', length);
+    int x = 0;
+    unsigned long i;
+    while(*buf != '\0')
+    {
+        if(*buf == '\\') {
+            strcpy(buf_temp,buf);
+            *buf_temp = '0';
+            *(buf_temp + 4) = '\0';
+            i = strtoul(buf_temp, NULL, 16);
+            dst[x] = i;
+            buf += 3;        
+        }
+        else {
+            dst[x] = *buf;            
+        }
+        x++;
+        buf++;     
+    }
+    dst[x] = '\0';
+    return dst;
+}

@@ -22,6 +22,8 @@ void modfd(int epollfd, int fd, int ev);
 void sig_handler(int sig);
 void addsig(int sig);
 
+char *stohex(char *buf, int length);
+
 //int write_log(char *buf, int length);
 
 #endif

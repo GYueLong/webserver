@@ -52,6 +52,15 @@ public:
 	//非阻塞写操作
 	bool mwrite();
 
+    //获取时间戳
+    long getTime() const {
+        return m_time;
+    }
+    //设置时间戳
+    void setTime(long time) {
+        this->m_time = time;
+    }
+
 private:
 	//初始化连接
 	void init();
@@ -110,6 +119,9 @@ private:
 
 	int f_msg;
 	char msg[50];
+
+    //时间戳
+    long m_time;
 
 };
 //}
