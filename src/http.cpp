@@ -182,7 +182,12 @@ Http::HTTP_CODE Http::parse_content(char *text) {
 		f_msg = 0;
 		strncpy(msg, text + 6, 50);
 		strcpy(m_url, "/thanks.html");
-		LOG_INFO("%s: %s", inet_ntoa(m_address.sin_addr), msg);
+		//memset(msg, 0x00, 50);
+        //char szTest[255] = {0x00};
+        //memcpy(szTest, "\xE4\xBD\xA0", strlen("\xE4\xBD\xA0"));
+        //stohex(szTest, msg);
+        stohex(msg, 50);
+        LOG_INFO("%s: %s", inet_ntoa(m_address.sin_addr), msg);
 		//printf("msg is %s\n", msg);
 		return POST_REQUEST;
 	}

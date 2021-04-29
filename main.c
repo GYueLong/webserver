@@ -11,7 +11,7 @@ int fd_w;
 
 int main(int argc, char **argv) {
 
-    pid_t pid;
+    /*pid_t pid;
     if (fork() < 0) {
         perror("fork()");
     } else if (fork() > 0) {
@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
     //子进程
     setsid();
     close(1);
-
+*/
     Server server;
     server.init(argc, argv);
     server.start();
